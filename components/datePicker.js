@@ -64,9 +64,11 @@ const DatePicker = () => {
             minDate={minDate}
             maxDate={maxDate}
             todayBackgroundColor="#f2e6ff"
-            selectedDayColor="#7300e6"
+            selectedDayColor="#F95880"
             selectedDayTextColor="#FFFFFF"
             onDateChange={onDateChange}
+           
+            
             width={350}
           />
           {startDate || endDate ? (
