@@ -1,5 +1,6 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
+import { horizontalScale, verticalScale } from '../../responsiveness';
 
 const Switchprofile = () => {
   const DATA = [
@@ -37,7 +38,7 @@ const Switchprofile = () => {
       onPress={() => setSelectedUser(id)}
     >
       <Image
-        style={{ width: 70, height: 70 }}
+        style={{ width: horizontalScale(70), height: verticalScale(70) }}
         source={image}
       />
       <Text style={{ fontWeight: id === selectedUser ? 500 : 300 , fontSize: 14, marginTop: 5, color: id === selectedUser ? '#F95881' : '#444343', textAlign: 'center' }}>{title}</Text>
@@ -53,7 +54,7 @@ const Switchprofile = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ justifyContent: 'space-between' }}
       />
-      <Text style={{fontWeight: '800', fontSize: 17, marginTop: 30, color:"#8C8C8C" , textAlign:"center"}}>Manage Member?</Text>
+      <Text style={{fontWeight: '800', fontSize: 17, marginTop: verticalScale(30), color:"#8C8C8C" , textAlign:"center"}}>Manage Member?</Text>
     </View>
   );
 };

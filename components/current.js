@@ -6,9 +6,18 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import { horizontalScale, verticalScale } from '../responsiveness';
+import AddMedicineModal from './medicine/addMedicineModal';
 
 const Current = ({name}) => {
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   const DataList = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -41,19 +50,19 @@ const Current = ({name}) => {
           flexDirection: 'row',
         }}>
         <View
-          style={{width: '20%', paddingHorizontal: 10, paddingVertical: 20}}>
+          style={{width: '20%', paddingHorizontal: 10, paddingVertical:verticalScale(20)}}>
           <Image
             source={image}
             style={{
               resizeMode: 'contain',
-              width: 50,
-              height: 50,
+              width: horizontalScale(50),
+              height: verticalScale(50),
               marginTop: 1,
             }}
           />
         </View>
         <View
-          style={{width: '58%', paddingHorizontal: 10, paddingVertical: 20}}>
+          style={{width: '58%', paddingHorizontal: 10, paddingVertical: verticalScale(20)}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               style={{
@@ -113,8 +122,8 @@ const Current = ({name}) => {
                 source={verified}
                 style={{
                   resizeMode: 'contain',
-                  width: 20,
-                  height: 20,
+                  width: horizontalScale(20),
+                  height: verticalScale(20),
                   marginTop: 10,
                   alignSelf: 'center',
                 }}
@@ -225,6 +234,7 @@ const Current = ({name}) => {
       />
 
       <TouchableOpacity
+      onPress={()=> toggleModal()}
         style={{
           backgroundColor: '#F95881',
           width: '50%',
@@ -243,6 +253,10 @@ const Current = ({name}) => {
           + Add Medicine
         </Text>
       </TouchableOpacity>
+
+      {/* Add medicine modal  */}
+
+      <AddMedicineModal isVisible={isModalVisible} toggleModal={toggleModal} />
     </View>
   );
 };
@@ -253,15 +267,13 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     borderRadius: 10,
-    // paddingVertical: 15,
-    // paddingHorizontal: 15,
     width: '100%',
     marginVertical: 10,
   },
   newCard: {
     backgroundColor: 'white',
     borderRadius: 10,
-    height: 150,
+    height: verticalScale(150),
     width: '100%',
     marginVertical: 10,
   },

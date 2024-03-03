@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Current from '../current';
+import { horizontalScale, verticalScale } from '../../responsiveness';
 
 const Medicine = () => {
   const [medicineName, setMedicineName] = useState('');
@@ -20,13 +21,12 @@ const Medicine = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          //   marginHorizontal: 20,
           marginTop: 10,
         }}>
         <View style={{flexDirection: 'row', marginTop: 8}}>
           <Image
             source={require('../../Images/back.png')}
-            style={{width: 12, height: 22, marginRight: 9}}
+            style={{width: horizontalScale(12), height: verticalScale(22), marginRight: 9}}
           />
           <Text
             style={{
@@ -48,7 +48,7 @@ const Medicine = () => {
           }}>
           <Image
             source={require('../../Images/filter.png')}
-            style={{width: 25, height: 25, marginRight: 6}}
+            style={{width: horizontalScale(25), height: verticalScale(25), marginRight: 6}}
           />
 
           <Text
@@ -66,7 +66,7 @@ const Medicine = () => {
         style={{
           borderBottomWidth: 0.7,
           borderBottomColor: '#444343',
-          marginTop: 20,
+          marginTop: verticalScale(20),
         }}
       />
 
@@ -85,7 +85,7 @@ const Medicine = () => {
         <TouchableOpacity>
           <Image
             source={require('../../Images/search.png')}
-            style={{width: 25, height: 25, marginTop: 12}}
+            style={{width:horizontalScale(25), height:verticalScale(25), marginTop: 12}}
           />
         </TouchableOpacity>
       </View>
