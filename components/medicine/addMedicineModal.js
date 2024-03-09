@@ -1,7 +1,10 @@
 import {
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -16,11 +19,21 @@ import {
   requestExternalWritePermission,
 } from '../permissions';
 import {horizontalScale, verticalScale} from '../../responsiveness';
+import Freequency from './freequency';
 
 const AddMedicineModal = ({isVisible, toggleModal}) => {
+  const [isStrengthModalVisible, setStrengthModalVisible] = useState(false);
   const [medicineName, setMedicineName] = useState('');
   const [imageData, setImageData] = useState(null);
+  const [isFreequencyModalVisible, setFreequencyModalVisible] = useState(false);
 
+  const toggleFreequencyModal = () => {
+    setFreequencyModalVisible(!isFreequencyModalVisible);
+  };
+
+  const toggleStrengthModal = () => {
+    setStrengthModalVisible(!isStrengthModalVisible);
+  };
   //for selecting image
   const chooseFile = () => {
     try {
@@ -46,59 +59,71 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
       <Modal isVisible={isVisible}>
         <View
-          style={{backgroundColor: '#fff', height: '65%', borderRadius: 10}}>
-          <Text
-            style={{
-              fontWeight: '600',
-              fontSize: 22,
-              color: '#253141',
-              marginTop: 10,
-              alignSelf: 'center',
-            }}>
-            ADD MEDICINE
-          </Text>
-        
+          style={{
+            backgroundColor: '#fff',
+            minHeight: '65%',
+            borderRadius: 10,
+            paddingVertical: 10,
+          }}>
+          <ScrollView>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 22,
+                color: '#253141',
+                marginTop: 10,
+                alignSelf: 'center',
+              }}>
+              ADD MEDICINE
+            </Text>
 
-          {/* name of medication  */}
-          <View style={{flexDirection: 'row'}}>
-            <View style={[styles.input, {flexDirection: 'row'}]}>
+            {/* name of medication  */}
+            <View style={{flexDirection: 'row'}}>
+              <View style={[styles.input, {flexDirection: 'row'}]}>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../Images/medicine/medical.png')}
+                    style={{
+                      width: horizontalScale(17),
+                      height: verticalScale(17),
+                      marginTop: 12,
+                      marginRight: 10,
+                    }}
+                  />
+                </TouchableOpacity>
+                <TextInput
+                  placeholder="Name of Medication"
+                  placeholderTextColor={'#00000045'}
+                  onChangeText={text => setMedicineName(text)}
+                  value={medicineName}
+                />
+              </View>
               <TouchableOpacity>
                 <Image
-                  source={require('../../Images/medicine/medical.png')}
+                  source={require('../../Images/medicine/ocr.png')}
                   style={{
-                    width: horizontalScale(17),
-                    height: verticalScale(17),
-                    marginTop: 12,
+                    width: horizontalScale(20),
+                    height: verticalScale(20),
+                    marginTop: verticalScale(30),
                     marginRight: 10,
                   }}
                 />
               </TouchableOpacity>
-              <TextInput
-                placeholder="Name of Medication"
-                placeholderTextColor={'#00000045'}
-                onChangeText={text => setMedicineName(text)}
-                value={medicineName}
-              />
             </View>
-            <TouchableOpacity>
-              <Image
-                source={require('../../Images/medicine/ocr.png')}
-                style={{
-                  width: horizontalScale(20),
-                  height: verticalScale(20),
-                  marginTop: verticalScale(30),
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
 
-          {/* medication strength */}
-          <View style={[styles.inputBox, {flexDirection: 'row'}]}>
-            <TouchableOpacity>
+            {/* medication strength */}
+
+            <TouchableOpacity
+              style={[styles.inputBox, {flexDirection: 'row'}]}
+              onPress={() => {
+                toggleStrengthModal();
+                toggleModal();
+              }}>
               <Image
                 source={require('../../Images/medicine/medicine.png')}
                 style={{
@@ -109,19 +134,40 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
                   marginRight: 10,
                 }}
               />
+
+              <TextInput
+                placeholder="Medication Strength"
+                placeholderTextColor={'#00000045'}
+              />
             </TouchableOpacity>
-            <TextInput
-              placeholder="Medication Strength"
-              placeholderTextColor={'#00000045'}
-            />
-          </View>
 
-          {/* doctor name */}
+            {/* doctor name */}
 
-          <View style={[styles.inputBox, {flexDirection: 'row'}]}>
-            <TouchableOpacity>
+            <View style={[styles.inputBox, {flexDirection: 'row'}]}>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../Images/medicine/profile.png')}
+                  style={{
+                    width: horizontalScale(17),
+                    height: verticalScale(17),
+                    resizeMode: 'contain',
+                    marginTop: 12,
+                    marginRight: 10,
+                  }}
+                />
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Doctor's Name"
+                placeholderTextColor={'#00000045'}
+              />
+            </View>
+
+            {/* upload medicine photo */}
+            <TouchableOpacity
+              onPress={chooseFile}
+              style={[styles.inputBox, {flexDirection: 'row'}]}>
               <Image
-                source={require('../../Images/medicine/profile.png')}
+                source={require('../../Images/medicine/ic_round-cloud-upload.png')}
                 style={{
                   width: horizontalScale(17),
                   height: verticalScale(17),
@@ -130,30 +176,52 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
                   marginRight: 10,
                 }}
               />
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    fontSize: 14,
+                    color: '#00000045',
+                    paddingVertical: 14,
+                    alignSelf: 'center',
+                  }}>
+                  Upload Medicine Photo
+                </Text>
+                {imageData ? (
+                  <Image
+                    style={{
+                      width: 40,
+                      height: 40,
+                      resizeMode: 'contain',
+                      marginRight: 20,
+                    }}
+                    source={{uri: imageData.uri}}
+                  />
+                ) : null}
+              </View>
             </TouchableOpacity>
-            <TextInput
-              placeholder="Doctor's Name"
-              placeholderTextColor={'#00000045'}
-            />
-          </View>
 
-          {/* upload medicine photo */}
-          <TouchableOpacity
-            onPress={chooseFile}
-            style={[styles.inputBox, {flexDirection: 'row'}]}>
-            <Image
-              source={require('../../Images/medicine/ic_round-cloud-upload.png')}
-              style={{
-                width: horizontalScale(17),
-                height: verticalScale(17),
-                resizeMode: 'contain',
-                marginTop: 12,
-                marginRight: 10,
-              }}
-            />
+            {/* upload prescription */}
 
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',width:"100%"}}>
+            {/* upload medicine photo */}
+            <TouchableOpacity style={[styles.inputBox, {flexDirection: 'row'}]}>
+              <Image
+                source={require('../../Images/medicine/ic_round-cloud-upload.png')}
+                style={{
+                  width: horizontalScale(17),
+                  height: verticalScale(17),
+                  resizeMode: 'contain',
+                  marginTop: 12,
+                  marginRight: 10,
+                }}
+              />
+
               <Text
                 style={{
                   fontWeight: '400',
@@ -162,48 +230,231 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
                   paddingVertical: 14,
                   alignSelf: 'center',
                 }}>
-                Upload Medicine Photo
+                Upload Prescription
               </Text>
-              {imageData ? (
-                <Image
+            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+                justifyContent: 'space-around',
+              }}>
+              <TouchableOpacity
+                onPress={toggleModal}
+                style={{
+                  backgroundColor: '#EEF7FF',
+                  padding: 10,
+                  width: '42%',
+                  borderRadius: 6,
+                  marginLeft: 6,
+                }}>
+                <Text
                   style={{
-                    width: 40,
-                    height: 40,
-                    resizeMode: 'contain',
-                marginRight:20
-                  }}
-                  source={{uri: imageData.uri}}
-                />
-              ) : null}
+                    alignSelf: 'center',
+                    color: '#2ADDF3',
+                    fontWeight: '600',
+                    fontSize: 16,
+                  }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#F95880',
+                  padding: 10,
+                  width: '42%',
+                  borderRadius: 6,
+                  marginLeft: 10,
+                }}>
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    color: '#fff',
+                    fontWeight: '600',
+                    fontSize: 16,
+                  }}>
+                  Continue
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+
+      {/* doses modal*/}
+      <Modal isVisible={isStrengthModalVisible}>
+        <View
+          style={{
+            backgroundColor: '#fff',
+            minHeight: '50%',
+            borderRadius: 10,
+            paddingVertical: 10,
+          }}>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 22,
+              color: '#253141',
+              marginTop: 10,
+              alignSelf: 'center',
+            }}>
+            DOSES
+          </Text>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 18,
+              color: '#253141',
+              marginTop: 16,
+              alignSelf: 'center',
+            }}>
+            When will this medication be taken?
+          </Text>
+
+          {/* freequency */}
+
+          <TouchableOpacity
+            style={[
+              styles.inputBox,
+              {
+                flexDirection: 'row',
+                paddingVertical: 14,
+                justifyContent: 'space-between',
+              },
+            ]}
+            onPress={() => {toggleFreequencyModal()
+              toggleStrengthModal()}}
+            >
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={require('../../Images/medicine/freequency.png')}
+                style={{
+                  width: horizontalScale(17),
+                  height: verticalScale(17),
+                  resizeMode: 'contain',
+                  // marginTop: 12,
+                  marginRight: 10,
+                }}
+              />
+
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 14,
+                  color: '#00000045',
+                  alignSelf: 'center',
+                }}>
+                Freequency
+              </Text>
+            </View>
+            <View>
+              <Image
+                source={require('../../Images/right_arrow.png')}
+                style={{
+                  width: horizontalScale(12),
+                  height: verticalScale(12),
+                  resizeMode: 'contain',
+                  marginTop: 2,
+                  marginRight: 10,
+                }}
+              />
             </View>
           </TouchableOpacity>
 
-          {/* upload prescription */}
+          {/* addtime */}
 
-          {/* upload medicine photo */}
-          <TouchableOpacity style={[styles.inputBox, {flexDirection: 'row'}]}>
-            <Image
-              source={require('../../Images/medicine/ic_round-cloud-upload.png')}
-              style={{
-                width: horizontalScale(17),
-                height: verticalScale(17),
-                resizeMode: 'contain',
-                marginTop: 12,
-                marginRight: 10,
-              }}
-            />
-
-            <Text
-              style={{
-                fontWeight: '400',
-                fontSize: 14,
-                color: '#00000045',
+          <TouchableOpacity
+            style={[
+              styles.inputBox,
+              {
+                flexDirection: 'row',
                 paddingVertical: 14,
-                alignSelf: 'center',
-              }}>
-              Upload Prescription
-            </Text>
+                justifyContent: 'space-between',
+              },
+            ]}>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={require('../../Images/medicine/time.png')}
+                style={{
+                  width: horizontalScale(17),
+                  height: verticalScale(17),
+                  resizeMode: 'contain',
+                  // marginTop: 12,
+                  marginRight: 10,
+                }}
+              />
+
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 14,
+                  color: '#00000045',
+                  alignSelf: 'center',
+                }}>
+                Add Time
+              </Text>
+            </View>
+            <View>
+              <Image
+                source={require('../../Images/right_arrow.png')}
+                style={{
+                  width: horizontalScale(12),
+                  height: verticalScale(12),
+                  resizeMode: 'contain',
+                  marginTop: 2,
+                  marginRight: 10,
+                }}
+              />
+            </View>
           </TouchableOpacity>
+
+          {/* add duration */}
+
+          <TouchableOpacity
+            style={[
+              styles.inputBox,
+              {
+                flexDirection: 'row',
+                paddingVertical: 14,
+                justifyContent: 'space-between',
+              },
+            ]}>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={require('../../Images/medicine/calendar.png')}
+                style={{
+                  width: horizontalScale(17),
+                  height: verticalScale(17),
+                  resizeMode: 'contain',
+                  // marginTop: 12,
+                  marginRight: 10,
+                }}
+              />
+
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 14,
+                  color: '#00000045',
+                  alignSelf: 'center',
+                }}>
+                Add Duration
+              </Text>
+            </View>
+            <View>
+              <Image
+                source={require('../../Images/right_arrow.png')}
+                style={{
+                  width: horizontalScale(12),
+                  height: verticalScale(12),
+                  resizeMode: 'contain',
+                  marginTop: 2,
+                  marginRight: 10,
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+
           <View
             style={{
               flexDirection: 'row',
@@ -211,7 +462,7 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
               justifyContent: 'space-around',
             }}>
             <TouchableOpacity
-              onPress={toggleModal}
+              onPress={() => toggleStrengthModal()}
               style={{
                 backgroundColor: '#EEF7FF',
                 padding: 10,
@@ -244,13 +495,16 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
                   fontWeight: '600',
                   fontSize: 16,
                 }}>
-                Continue
+                Add
               </Text>
             </TouchableOpacity>
           </View>
         </View>
+  
       </Modal>
-    </View>
+      <Freequency isVisible={isFreequencyModalVisible} toggleModal={toggleFreequencyModal}  />
+   
+    </KeyboardAvoidingView>
   );
 };
 
@@ -268,7 +522,6 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     marginTop: 20,
-
     borderWidth: 1,
     borderColor: '#d3d3d3',
     borderRadius: 6,
