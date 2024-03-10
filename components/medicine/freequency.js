@@ -6,6 +6,7 @@ import {horizontalScale, verticalScale} from '../../responsiveness';
 
 import ChooseDays from '../chooseDays';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import SpecificInterval from '../specificInterval';
 
 const Freequency = ({isVisible, toggleModal}) => {
   const [value, setValue] = React.useState('onceDay');
@@ -258,6 +259,7 @@ const Freequency = ({isVisible, toggleModal}) => {
 {value === 'onceWeek' ? (
            <ChooseDays selectionType="onceWeek"/>
             ) : null}
+            
 
 {value === 'onceMonth' ? (
     <>
@@ -304,6 +306,10 @@ const Freequency = ({isVisible, toggleModal}) => {
       </>
             ) : null}
           </View>
+
+          {value === 'specificInterval' ? (
+         <SpecificInterval/>
+            ) : null}
 
           <View
             style={{

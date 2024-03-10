@@ -20,15 +20,27 @@ import {
 } from '../permissions';
 import {horizontalScale, verticalScale} from '../../responsiveness';
 import Freequency from './freequency';
+import AddTime from '../addTime';
+import AddDuration from '../addDuration';
 
 const AddMedicineModal = ({isVisible, toggleModal}) => {
   const [isStrengthModalVisible, setStrengthModalVisible] = useState(false);
   const [medicineName, setMedicineName] = useState('');
   const [imageData, setImageData] = useState(null);
   const [isFreequencyModalVisible, setFreequencyModalVisible] = useState(false);
+  const [isAddTimeModalVisible, setAddTimeModalVisible] = useState(false);
+  const [isAddDurationModalVisible, setAddDurationModalVisible] = useState(false);
 
   const toggleFreequencyModal = () => {
     setFreequencyModalVisible(!isFreequencyModalVisible);
+  };
+
+  const toggleAddTimeModal = () => {
+    setAddTimeModalVisible(!isAddTimeModalVisible);
+  };
+
+  const toggleAddDurationModal = () => {
+    setAddDurationModalVisible(!isAddDurationModalVisible);
   };
 
   const toggleStrengthModal = () => {
@@ -364,6 +376,8 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
           {/* addtime */}
 
           <TouchableOpacity
+            onPress={() => {toggleAddTimeModal()
+              toggleStrengthModal()}}
             style={[
               styles.inputBox,
               {
@@ -411,6 +425,8 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
           {/* add duration */}
 
           <TouchableOpacity
+           onPress={() => {toggleAddDurationModal()
+            toggleStrengthModal()}}
             style={[
               styles.inputBox,
               {
@@ -503,7 +519,8 @@ const AddMedicineModal = ({isVisible, toggleModal}) => {
   
       </Modal>
       <Freequency isVisible={isFreequencyModalVisible} toggleModal={toggleFreequencyModal}  />
-   
+      <AddTime isVisible={isAddTimeModalVisible} toggleModal={toggleAddTimeModal}  />
+      <AddDuration isVisible={isAddDurationModalVisible} toggleModal={toggleAddDurationModal}  />
     </KeyboardAvoidingView>
   );
 };
